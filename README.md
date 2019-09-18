@@ -1,6 +1,6 @@
 # Immunization Tracking and Alerts for Schools
 
-### Team Raptor
+### Team
 * Prakash Bhatta 
 * Josh Fox
 * Liz Hesser 
