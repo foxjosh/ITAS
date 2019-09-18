@@ -1,0 +1,14 @@
+th.sortable {
+  cursor: pointer;
+}
+
+.sortable {
+  .asc.selected:before {
+    font-family: 'Font Awesome 5 Free';
+    content: '\f0de';
+  }
+  .desc.selected:before {
+    font-family: 'Font Awesome 5 Free';
+    content: '\f0dd';
+  }
+}

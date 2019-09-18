@@ -1,0 +1,184 @@
+<div *ngIf="hasStudentLoaded | async">
+  <div class="row">
+      <h3 *ngIf="isNewStudent" class="col">
+          Add New Student
+      </h3>
+  </div>
+  <div class="row loading text-center text-warning mb-3" *ngIf="loading">
+    <div class="col">
+      <i class="fa fa-cog fa-spin fa-3x fa-fw" aria-label="Loading..."></i>
+    </div>
+  </div>
+  <div id="student-information" class="row" *ngIf="hasStudentLoaded | async">
+    <div id="student-status" class="col-md-2">
+      <div id="student-status-visualization" class="mb-3 mt-3 text-center" *ngIf="studentRecord?.studentId != 0">
+
+        <canvas baseChart width="200" height="200" id="chart"
+                [chartType]="pieChartType"
+                [data]="pieChartData"
+                [labels]="pieChartLabels"
+                [colors]="pieChartColors"
+                [legend]="pieChartLegend"
+                ></canvas>
+        <label for="chart">Immunization Status</label>
+      </div>
+    </div>
+    <div id="student-details" class="col-md-6">
+      <div class="form-group row" *ngIf="!isNewStudent && !isEditMode">
+        <div class="col">
+          <ng-select *ngIf="hasStudentLoaded | async" id="selected-student" style="width: 100%;"
+                     [(ngModel)]="selectedStudent" (change)="changeStudent($event)"
+                     [items]="studentRecordsViewModel?.studentRecords" bindValue="studentId"
+                     [searchFn]="searchStudents"
+                     groupBy="grade" [clearable]="false"
+          >
+            <ng-template ng-label-tmp let-item="item">
+              {{ item?.firstName }} {{ item?.lastName }}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              {{ item?.firstName }} {{ item?.lastName }}
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-4 col-form-label text-right">First Name</label>
+        <div class="col-sm-8">
+          <input type="text" id="firstName" class="form-control"
+              [(ngModel)]="studentRecord.firstName" *ngIf="isEditMode">
+          <p class="form-control-plaintext" *ngIf="!isEditMode">
+            {{ studentRecord.firstName }}
+          </p>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="name" class="col-sm-4 col-form-label text-right">Last Name</label>
+        <div class="col-sm-8">
+          <input type="text" id="lastName" class="form-control"
+              [(ngModel)]="studentRecord.lastName" *ngIf="isEditMode">
+          <p class="form-control-plaintext" *ngIf="!isEditMode">
+            {{ studentRecord.lastName }}
+          </p>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="dob" class="col-sm-4 col-form-label text-right">Date of Birth</label>
+        <div class="col-sm-8">
+          <input class="form-control" type="date" id="dob"
+                [(ngModel)]="studentRecord.dob" *ngIf="isEditMode">
+          <p class="form-control-plaintext" *ngIf="!isEditMode">
+            {{ studentRecord.dob | date:'MM/dd/yyyy' }} {{ " - (" + calculateAge(studentRecord.dob) + ")" }}
+          </p>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="sex" class="col-sm-4 col-form-label text-right">Sex</label>
+        <div class="col-sm-8">
+          <select id="sex" class="form-control" [(ngModel)]="studentRecord.sex" *ngIf="isEditMode">
+            <option *ngFor="let gender of genderList" [ngValue]="gender">{{ gender }}</option>
+          </select>
+          <p class="form-control-plaintext" *ngIf="!isEditMode">
+            {{ studentRecord.sex }}
+          </p>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="grade" class="col-sm-4 col-form-label text-right">Grade</label>
+        <div class="col-sm-8">
+          <select id="grade" class="form-control" [(ngModel)]="studentRecord.grade" *ngIf="isEditMode">
+            <option *ngFor="let grade of gradeList" [ngValue]="grade">{{ grade }}</option>
+          </select>
+          <p class="form-control-plaintext" *ngIf="!isEditMode">
+            {{ studentRecord.grade }}
+          </p>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="homeroom" class="col-sm-4 col-form-label text-right">Homeroom</label>
+        <div class="col-sm-8">
+          <select id="homeroom" class="form-control" [(ngModel)]="studentRecord.homeroom" *ngIf="isEditMode">
+            <option *ngFor="let homeroom of homeroomList" [ngValue]="homeroom">{{ homeroom }}</option>
+          </select>
+          <p class="form-control-plaintext" *ngIf="!isEditMode">
+            {{ studentRecord.homeroom }}
+          </p>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="guardianContact" class="col-sm-4 col-form-label text-right">Guardian Contact</label>
+        <div class="col-sm-8">
+          <input type="text" id="guardianContact" class="form-control"
+              [(ngModel)]="studentRecord.guardianContact"  *ngIf="isEditMode">
+          <p class="form-control-plaintext" *ngIf="!isEditMode">
+            {{ studentRecord.guardianContact }}
+          </p>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-8 offset-sm-4">
+          <button (click)="saveOrEditProfile()" class="btn" [ngClass]="getSaveButtonClass()">{{ getSaveButtonLabel() }}</button>
+        </div>
+      </div>
+    </div>
+    <div id="student-notes" class="col-md-4">
+      <div class="form-group mt-5">
+        <label for="extended-notes" class="col-form-label">Exemptions and Notes</label>
+        <textarea id="extended-notes" class="form-control" *ngIf="isEditMode"
+          [(ngModel)]="studentRecord.notes" rows="5"></textarea>
+        <p class="form-control-plaintext" *ngIf="!isEditMode">{{ studentRecord.notes }}</p>
+      </div>
+    </div>
+  </div>
+  <div id="vaccination-information" class="row" *ngIf="!isNewStudent">
+    <table class="table table-striped table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col"><span class="sr-only">Status</span></th>
+          <th scope="col">Vaccinations</th>
+          <th scope="col" class="text-center">Recommended By</th>
+          <th scope="col" colspan="2">Completed / Completed Date</th>
+          <th scope="col">Notes</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of studentRecord.vaccinations; let i = index">
+          <td class="text-center align-middle"><i *ngIf="record.status" [ngClass]="statusClass(record.status)"></i></td>
+          <td class="align-middle">{{ record.vaccinationName }}</td>
+          <td class="text-center align-middle">{{ record.recommendedDate | date:'MMM - yyyy' }}</td>
+          <td class="align-middle">
+            <div class="switch switch-sm">
+              <input id="{{i + '-completed'}}" type="checkbox" class="switch"
+                    [checked]="isVaccineComplete(record)"
+                    (click)="toggleRecordStatus(record)"
+              >
+              <label for="{{i + '-completed'}}" class="sr-only">Incomplete / Completed</label>
+            </div>
+          </td>
+          <td class="align-middle">
+            <input type="date" class="form-check-label form-control"
+                  *ngIf="!isVaccineComplete(record)"
+                  [(ngModel)]="record.completedDate"
+                  name="{{i + '-completedDate'}}"
+            >
+            <label *ngIf="isVaccineComplete(record)" class="form-check-label">
+              {{ record.completedDate | date:'MM/dd/yyyy' }}
+            </label>
+          </td>
+          <td class="align-middle">
+            <input type="text" placeholder="Note" class="form-control"
+                  *ngIf="!isVaccineComplete(record)"
+                  [(ngModel)]="record.note"
+            >
+            <label *ngIf="isVaccineComplete(record)" class="form-check-label">
+              {{ record.note }}
+            </label>
+          </td>
+          <td class="align-middle">
+            <button class="btn btn-link" *ngIf="!isVaccineComplete(record)" (click)="saveProfile()"><i class="fa fa-save" aria-label="Save Record"></i> Save</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

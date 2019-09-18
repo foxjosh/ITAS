@@ -1,0 +1,54 @@
+<div class="row loading text-center text-warning mb-3" *ngIf="loading">
+  <div class="col">
+    <i class="fa fa-cog fa-spin fa-3x fa-fw" aria-label="Loading..."></i>
+  </div>
+</div>
+<div id="visualizations" class="row">
+
+
+</div>
+<div id="alerts">
+  <ng-container *ngIf="!dashboardViewModel || !dashboardViewModel.appNotifications || dashboardViewModel?.appNotifications?.length == 0">
+    <div class="row notification">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="alert-content col-sm-11">
+                <p class="card-text text-center">No new alerts or notifications.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngFor="let alert of dashboardViewModel?.appNotifications">
+    <div *ngIf="alert.visible" class="row notification">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header no-gutters">
+            <div class="row">
+              <h5 class="card-title col">{{ alert.notificationDate | date:'M/d/yyyy' }}</h5>
+              <div class="col text-right">
+                <button class="btn btn-link btn-sm" (click)="dismissAlert(alert)">Dismiss</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="alert-level text-center col-sm-1">
+                <i [ngClass]="getAlertIconCssClass(alert.type)"></i>
+              </div>
+              <div class="alert-content col-sm-11">
+                <p class="card-text"><span>{{ alert.type }}</span> - {{ alert.summary}}</p>
+                <hr>
+                <p class="card-text">{{ alert.recommendations }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,28 @@
+<nav role="navigation" *ngIf="router.url != '/login'">
+  <ul class="nav nav-tabs nav-fill nav-justified">
+    <li role="presentation" class="nav-item">
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">Dashboard
+        <span class="count badge badge-warning badge-pill" *ngIf="dashboardViewModel?.appNotifications?.length > 0">{{ dashboardViewModel?.appNotifications?.length }}</span>
+      </a>
+    </li>
+    <li role="presentation" class="nav-item">
+      <a routerLink="/student-records" routerLinkActive="active" class="nav-link">View Student Records</a>
+    </li>
+    <li role="presentation" class="nav-item">
+      <a routerLink="/record-entry" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" class="nav-link">Enter Records</a>
+    </li>
+    <li class="nav-item dropdown">
+      <button class="nav-link btn-link dropdown-toggle ml-5" id="navbarDropdown"
+              aria-haspopup="true" aria-expanded="false" (click)="showMenu = !showMenu">
+        <i class="fa fa-user"></i> {{ userName ? userName : "Admin User" }}
+      </button>
+      <div class="dropdown-menu ml-5" aria-labelledby="navbarDropdown" [ngClass]="{'show': showMenu}" (click)="showMenu = !showMenu">
+        <button class="dropdown-item btn-link" routerLink="/profile" routerLinkActive="active"><i class="fa fa-user"></i> Profile</button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item btn-link" (click)="logout()"><i class="fa fa-door-open"></i> Log out</button>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<router-outlet></router-outlet>

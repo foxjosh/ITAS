@@ -1,0 +1,47 @@
+version: '3'
+services:
+  immunization-tracker-api:
+    container_name: immunization-tracker-api
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - immunization-tracker-db2
+    ports:
+      - 8888:8888
+    environment:
+      - DATABASE_HOST=immunization-tracker-db2
+      - DATABASE_USER=immunizationTrackerUser
+      - DATABASE_PASSWORD=immunizationTrackerRules!
+      - DATABASE_NAME=immunizationTrackerDB  
+      - DATABASE_PORT=3306
+  
+  immunization-tracker-web-app:
+    container_name: immunization-tracker-web-app
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    restart: always
+    # volumes:
+    #   - './webapp:/usr/src/app'
+    #   - '/usr/src/app/node_modules'
+    ports:
+      - '4200:4200'
+
+  immunization-tracker-db2:
+    container_name: immunization-tracker-db2
+    # volumes:
+    #   - immunization-tracker-db2_data:/var/lib/mysql
+    image: mysql:5.7
+    restart: always
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: immunizationTrackerDBPassword
+      MYSQL_DATABASE: immunizationTrackerDB
+      MYSQL_USER: immunizationTrackerUser
+      MYSQL_PASSWORD: immunizationTrackerRules!
+
+# volumes:
+#   immunization-tracker-db2_data:

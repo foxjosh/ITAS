@@ -1,0 +1,26 @@
+<div class="d-flex justify-content-center">
+  <div id="profile" class="card col-lg-4">
+    <img *ngIf="user.profileImageSrc" [src]="user.profileImageSrc" height="100px" width="100px" class="card-img-top">
+    <div class="card-body">
+      <h1 class="card-title">{{ user.name }}</h1>
+      <p class="card-text">{{ user.level }}</p>
+      <hr>
+      <div class="list-group">
+        <button type="button"
+                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                routerLink="/student-records"
+        >
+          <span class="count-label">Students</span>
+          <span class="count badge badge-primary badge-pill">{{ studentRecordsViewModel?.studentRecords?.length }}</span>
+        </button>
+        <button type="button"
+                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                routerLink="/dashboard"
+        >
+          <span class="count-label">Alerts</span>
+          <span class="count badge badge-primary badge-pill">{{ dashboardViewModel?.appNotifications?.length }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
