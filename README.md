@@ -8,6 +8,8 @@
 * Chris Story 
 * Kourtney Wright
 
+## Overview
+
 Immunization rates in school populations are difficult to actively track. When rates fall below certain thresholds, students without immunizations are at risk for contracting major and potentially deadly Vaccine Preventable Diseases (VPDs).
 
 The goal of this app is to allow simple data entry of student immunization records by the school healthcare provider to track the school populace immunization status. There is an executive dashboard which shows the overall health status of a school from an immunization standpoint and notifies administrators when immunization rates change or dip below repudiable guidelines (such as the CDC).
