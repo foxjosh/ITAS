@@ -12,6 +12,11 @@ Immunization rates in school populations are difficult to actively track. When r
 
 The goal of this app is to allow simple data entry of student immunization records by the school healthcare provider to track the school populace immunization status. There is an executive dashboard which shows the overall health status of a school from an immunization standpoint and notifies administrators when immunization rates change or dip below repudiable guidelines (such as the CDC).
 
+### Dependencies
+* Front-End = Angular JS
+* Back-End = Java
+* Database = mySQL
+
 # Manual
 
 ## Logging In/Registering a New User
