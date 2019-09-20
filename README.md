@@ -12,12 +12,15 @@
 
 Immunization rates in school populations are difficult to actively track. When rates fall below certain thresholds, students without immunizations are at risk for contracting major and potentially deadly Vaccine Preventable Diseases (VPDs).
 
-The goal of this app is to allow simple data entry of student immunization records by the school healthcare provider to track the school populace immunization status. There is an executive dashboard which shows the overall health status of a school from an immunization standpoint and notifies administrators when immunization rates change or dip below repudiable guidelines (such as the CDC).
+The goal of this app is to allow simple data entry of student immunization records by the school healthcare provider to track the school populace immunization status. There is an executive dashboard that shows the overall health status of a school from an immunization standpoint and notifies administrators when immunization rates change or dip below repudiable guidelines (such as the CDC).
+
+The app development is achieved by utilizing Angular JS, Java, and mySQL. Angular JS is utilized to supply the front-end User Interface (UI) to the user to view, update and query student immunization records and view overall school status. Java is utilized to interface with the User Interface and the Fast Healthcare Interoperability Resources (FHIR) electronic healthcare information specification. FHIR is where each student's healthcare information is stored. MySQL is utilized to store each student's basic information (name, age, class).
 
 ### Dependencies
 * Front-End = Angular JS
 * Back-End = Java
 * Database = mySQL
+* Fast Healtcare Interoperability Resources (FHIR) Specification
 
 # Manual
 
